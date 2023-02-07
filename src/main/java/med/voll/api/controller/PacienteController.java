@@ -2,6 +2,7 @@ package med.voll.api.controller;
 
 import jakarta.validation.Valid;
 import med.voll.api.medico.DadosCadastroMedico;
+import med.voll.api.medico.DadosDetalhamentoMedico;
 import med.voll.api.paciente.*;
 import med.voll.api.repository.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,11 @@ public class PacienteController {
         paciente.deixarInativo();
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        var paciente = repository.getReferenceById(id);
+        return  ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
     }
 }

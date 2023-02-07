@@ -65,4 +65,10 @@ public class MedicoController {
         //noContent() para retornar o 204 e .buil() porq o noContent() ele não devolve o ResponseEntity e o .build() sim
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+        var medico = repository.getReferenceById(id);
+        return  ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
+    }
 }
