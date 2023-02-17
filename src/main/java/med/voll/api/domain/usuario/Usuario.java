@@ -18,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+//UserDetails para que o Spring saiba qual é o usuario e a senha
 public class Usuario implements UserDetails {
 
     @Id
