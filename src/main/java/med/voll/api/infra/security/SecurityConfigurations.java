@@ -1,5 +1,6 @@
 package med.voll.api.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,11 +12,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 //anotação para indicar que vamos personalizar configurações de segurança
 @EnableWebSecurity
 public class SecurityConfigurations {
+
+    @Autowired
+    private SecurityFilter securityFilter;
 
     //método para devolver para o Spring, anotação para o Spring conseguir ler o método
     @Bean
@@ -29,7 +34,9 @@ public class SecurityConfigurations {
                 .and().authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
-                .and().build();
+                //determinando que meu filter vem antes do filter do Spring
+                .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     //método para ensinar o Spring como que injeta objetos.
